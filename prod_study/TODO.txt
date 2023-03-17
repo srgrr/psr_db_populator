@@ -1,0 +1,14 @@
+# What we need to do here
+
+- Consider one of the two following options
+  - Get a copy running in genesis preprod server
+  - Just log in into cloud and fuck the service with queries
+  - Get an approximation instead of the exact thing by checking f' metrics from datadog
+
+- Get the data from whatever option you chose
+
+- Get at the very least this information
+  - Clusterization of orgs by org type, I expect something like big-ass orgs, intermediate orgs etc, but this clustering can even be more specific (e.g. by activity, how forgetful org guys are of leftovers etc)
+  - Distribution of such orgs in our cloud environment
+  - Basic, "average" information of each cluster representative (num users, num jobs, num pipelines, num engines, active jobs, scheduled tasks, subscriptions etc)
+
