@@ -1,4 +1,15 @@
 import subprocess
+import logging
+from numpy import random
+
+
+def get_rng():
+    return random
+
+
+def set_random_seed(seed: int):
+    logging.debug(f"Setting seed for RNG object {random} as {seed}")
+    get_rng().seed(seed)
 
 
 def get_local_ip():
