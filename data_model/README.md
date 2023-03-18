@@ -1,0 +1,2 @@
+# DON'T CHANGE A SINGLE LINE
+`populator.psr_populator` will read from `data_model/schema` and use the preset schemas to generate the data in StreamSets SCH. Changing it will lead to completely different results even if you keep the same RNG seed and the populator code remains intact

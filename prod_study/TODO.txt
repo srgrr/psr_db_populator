@@ -1,9 +1,10 @@
 # What we need to do here
 
-- Consider one of the two following options
+- Consider one of the following options
   - Get a copy running in genesis preprod server
   - Just log in into cloud and fuck the service with queries
   - Get an approximation instead of the exact thing by checking f' metrics from datadog
+
 
 - Get the data from whatever option you chose
 

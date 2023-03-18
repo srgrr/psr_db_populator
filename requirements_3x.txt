@@ -1,0 +1,8 @@
+# these dependencies won't affect PSR data model reproducibility
+requests
+coloredlogs
+tqdm
+# keep numpy version fixed, don't change it
+numpy==1.24.2
+# dont change the SDK version
+streamsets~=3.0
