@@ -48,8 +48,9 @@ class OrgArchetype(object):
         assert self.scheduled_tasks.max <= self.max_scheduled_runs, _interval_error_msg(self.scheduled_tasks, self.max_scheduled_runs, "scheduled tasks")
 
     def get_specific_instance(self):
+        org_name = random_string(10)
         ret = {
-            "org_name": random_string(10),
+            "org_name": org_name,
             "enable_subs": self.enable_subs,
             "max_users": self.max_users,
             "max_jobs_runs": self.max_job_runs,
@@ -57,7 +58,7 @@ class OrgArchetype(object):
             "max_engines": self.max_engines,
             "max_pipelines": self.max_pipelines
         }
-        logging.debug(f"Creating specific org")
+        logging.debug(f"Creating specific org with name {org_name}")
         # Create some users
         ret["users"] = []
         num_users = random_integer(self.users.min, self.users.max)
