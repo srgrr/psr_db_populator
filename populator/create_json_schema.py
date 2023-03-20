@@ -29,6 +29,8 @@ def main(random_seed, data_model_root, num_orgs, use_sample_schema):
             chosen_archetype.get_specific_instance()
         )
 
+    print(json.dumps(summary_json))
+
 
 if __name__ == "__main__":
     args = create_json_parse_args()

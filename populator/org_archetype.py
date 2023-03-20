@@ -1,6 +1,6 @@
 import logging
 from collections import namedtuple
-from populator.rng import random_string
+from populator.rng import random_string, random_integer, choice
 config_interval = namedtuple("interval", "min max")
 
 
@@ -22,7 +22,7 @@ class OrgArchetype(object):
                  scheduled_tasks: config_interval,
                  subscriptions: config_interval
                  ):
-        logging.debug(f"Creating org from args {locals()}")
+        logging.debug(f"Creating org archetype from args {locals()}")
         self.archetype_name = archetype_name
         self.enable_subs = enable_subs
         self.max_users = max_users
@@ -57,19 +57,96 @@ class OrgArchetype(object):
             "max_engines": self.max_engines,
             "max_pipelines": self.max_pipelines
         }
-        logging.debug(f"Creating specific org '{ret.get('org_name')}'")
+        logging.debug(f"Creating specific org")
         # Create some users
-        pass
+        ret["users"] = []
+        num_users = random_integer(self.users.min, self.users.max)
+        for user_idx in range(num_users):
+            username = random_string(5)
+            ret.get("users").append(
+                {
+                    "json-id": user_idx,
+                    "username": username,
+                    "role": "sys-admin"
+                }
+            )
+        logging.debug(f"Org will have {num_users} users")
         # "Create" some engines
-        pass
+        num_engines = random_integer(self.engines.min, self.engines.max)
+        ret["engines"] = []
+        for engine_idx in range(num_engines):
+            ret.get("engines").append(
+                {
+                    "json-id": engine_idx,
+                    "labels": "all"
+                }
+            )
+        logging.debug(f"Org will have {num_engines} engines")
         # Create some pipelines
-        pass
+        num_pipelines = random_integer(self.pipelines.min, self.pipelines.max)
+        ret["pipelines"] = []
+        for pipeline_idx in range(num_pipelines):
+            ret.get("pipelines").append(
+                {
+                    "json-id": pipeline_idx,
+                    "owner": random_integer(0, num_users - 1)
+                }
+            )
+        logging.debug(f"Org will have {num_pipelines} pipelines")
         # Create some jobs
-        pass
+        num_inactive_jobs = random_integer(self.inactive_jobs.min, self.inactive_jobs.max)
+        ret["jobs"] = []
+        for inactive_job_idx in range(num_inactive_jobs):
+            ret.get("jobs").append(
+                {
+                    "json-id": inactive_job_idx,
+                    "pipeline": random_integer(0, num_pipelines - 1),
+                    "status": "INACTIVE",
+                    "owner": random_integer(0, num_users - 1)
+                }
+            )
+        logging.debug(f"Org will have {num_inactive_jobs} inactive jobs")
+        num_active_jobs = random_integer(self.active_jobs.min, self.active_jobs.max)
+        for active_job_idx in range(num_active_jobs):
+            ret.get("jobs").append(
+                {
+                    "json-id": active_job_idx,
+                    "pipeline": random_integer(0, num_pipelines - 1),
+                    "status": "ACTIVE",
+                    "owner": random_integer(0, num_users - 1)
+                }
+            )
+        logging.debug(f"Org will have {num_active_jobs} active jobs")
         # Create some scheduled tasks
-        pass
-        # Create some subscriptions (doesnt't matter if subs are enabled or not)
-        pass
+        num_scheduled_tasks = random_integer(self.scheduled_tasks.min, self.scheduled_tasks.max)
+        ret["scheduled_tasks"] = []
+        for scheduled_task_idx in range(num_scheduled_tasks):
+            ret.get("scheduled_tasks").append(
+                {
+                    "json-id": scheduled_task_idx,
+                    # inactive jobs are just there to make the database bigger
+                    "job": random_integer(0, num_active_jobs - 1),
+                    "action": choice(["start", "stop"]),
+                    # 1-minute cron masks starting at random seconds
+                    "second": random_integer(0, 59),
+                    "owner": random_integer(0, num_users - 1)
+
+                }
+            )
+        logging.debug(f"Org will have {num_scheduled_tasks} scheduled tasks")
+        # Create some subscriptions (doesn't matter if subs are enabled or not)
+        num_subscriptions = random_integer(self.subscriptions.min, self.subscriptions.max)
+        ret["subscriptions"] = []
+        for subscription_idx in range(num_subscriptions):
+            ret.get("subscriptions").append(
+                {
+                    "json-id": subscription_idx,
+                    "job": random_integer(0, num_active_jobs - 1),
+                    "kind": choice(["INACTIVE->ACTIVE", "ACTIVE->INACTIVE"]),
+                    "owner": random_integer(0, num_users - 1)
+                }
+            )
+        logging.debug(f"Org will have {num_subscriptions} subscriptions")
         return ret
 
     @staticmethod
