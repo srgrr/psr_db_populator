@@ -1,18 +1,16 @@
 import subprocess
-import logging
-from numpy import random
+import os
 
 
-def get_rng():
-    return random
+def key_subset(d: dict, *keys: str) -> dict:
+    return {k: d.get(k) for k in keys}
 
 
-def set_random_seed(seed: int):
-    logging.debug(f"Setting seed for RNG object {random} as {seed}")
-    get_rng().seed(seed)
-
-
-def get_local_ip():
+def get_local_ip() -> str:
     return subprocess.check_output(
         ["ipconfig", "getifaddr", "en0"]
     ).decode("utf-8").strip()
+
+
+def get_pwd():
+    return os.getcwd()

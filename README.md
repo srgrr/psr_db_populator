@@ -1,6 +1,6 @@
 # PSR DB POPULATOR
 
-A tool to populate an empty DB with reproducible noise. By noise we mean what we were getting by running PSRs in a fresh clone of the production DB
+A tool to populate an empty DB with reproducible background noise. By noise we mean what we were getting by running PSRs in a fresh clone of the production DB
 - Orgs from customers
 - Jobs running
 
@@ -16,20 +16,30 @@ Make sure your python interpreter has all the required dependencies to run this 
 You can either run `pip install -r requirements.txt` or use the dockerized version of the tool (more on this later)
 
 ```
-python --sch-url ${SCH_URL} --random-seed ${RANDOM_SEED} --action create|test
+usage: PSR DB populator [-h] [--random-seed RANDOM_SEED] [--num-orgs NUM_ORGS] [--use-sample-schema] [--sch-url SCH_URL] [--sch-username SCH_USERNAME]
+                        [--sch-password SCH_PASSWORD] [--sch-authoring-sdc SCH_AUTHORING_SDC]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --random-seed RANDOM_SEED
+                        Random seed Default: 19071990
+  --num-orgs NUM_ORGS   Num orgs Default: 10
+  --use-sample-schema   Use a smaller schema instead of the real one for testing purposes Default: False
+  --sch-url SCH_URL     SCH URL Default: http://192.168.2.58:18631
+  --sch-username SCH_USERNAME
+                        SCH Admin Username Default: admin@admin
+  --sch-password SCH_PASSWORD
+                        SCH Admin Password Default: admin@admin
+  --sch-authoring-sdc SCH_AUTHORING_SDC
+                        SCH Authoring SDC Default: http://192.168.2.58:18630
 ```
 
 # Containerized version
-If you don't trust your system's interpreter, you want to make sure that results are as exact as possible between many different runs or you just like Docker because it adds an extra layer of complexity and makes you feel smart, you can build and run the tool from its own docker image
-`docker build -t psr_populator`
+TODO
 
 
 # Creating Reproducible DB Dumps
-A DB dump is generated taking into account the following three variables:
-- Git commit/tag (either checkout or `docker pull` any released version)
-- RNG seed (--random-seed)
-- Target SCH version (--sch-version) since it affects the SDK version we will load
-
+TODO
 
 # What's out of scope?
 - Engines can be anything since we are only concerned about the DB here, so the same DB dump using mock SDCs will give a completely different result than if ran using CSP engines

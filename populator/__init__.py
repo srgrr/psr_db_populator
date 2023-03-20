@@ -1,6 +1,5 @@
 import coloredlogs
 import logging
-from numpy import random
 
 
 coloredlogs.install(level="DEBUG")
