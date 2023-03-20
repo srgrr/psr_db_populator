@@ -1,13 +1,10 @@
 import logging
 import json
-from populator.cli import create_json_parse_args
+from populator.create_json_cli import parse_args
 from populator.org_pool import OrgPool
 from populator.rng import set_random_seed
 from populator.data_model_loader import load_from_root
-
-
-def _pretty_cli(cli: dict):
-    return ", ".join(f"{k}={v}" for (k, v) in cli.items())
+from populator.util import pretty_cli
 
 
 def _get_org_pool_from_data_model(data_model_root: str, use_sample_schema: bool) -> OrgPool:
@@ -16,7 +13,7 @@ def _get_org_pool_from_data_model(data_model_root: str, use_sample_schema: bool)
 
 
 def main(random_seed, data_model_root, num_orgs, use_sample_schema):
-    logging.debug(f"Invoked PSR Create JSON Schema tool with CLI args {_pretty_cli(locals())}")
+    logging.debug(f"Invoked PSR Create JSON Schema tool with CLI args {pretty_cli(locals())}")
     set_random_seed(random_seed)
     org_pool = _get_org_pool_from_data_model(data_model_root, use_sample_schema)
 
@@ -33,5 +30,5 @@ def main(random_seed, data_model_root, num_orgs, use_sample_schema):
 
 
 if __name__ == "__main__":
-    args = create_json_parse_args()
+    args = parse_args()
     main(**vars(args))

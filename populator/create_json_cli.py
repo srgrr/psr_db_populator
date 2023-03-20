@@ -5,7 +5,7 @@ from populator.util import get_pwd
 DEFAULT_STR = "Default: %(default)s"
 
 
-def get_basic_parser():
+def get_parser():
     parser = argparse.ArgumentParser(
         "PSR DB populator"
     )
@@ -36,5 +36,5 @@ def get_basic_parser():
     return parser
 
 
-def create_json_parse_args():
-    return get_basic_parser().parse_args()
+def parse_args():
+    return get_parser().parse_args()

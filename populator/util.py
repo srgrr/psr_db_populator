@@ -14,3 +14,7 @@ def get_local_ip() -> str:
 
 def get_pwd():
     return os.getcwd()
+
+
+def pretty_cli(cli: dict):
+    return ", ".join(f"{k}={v}" for (k, v) in cli.items())

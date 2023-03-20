@@ -71,7 +71,7 @@ class OrgArchetype(object):
                     "role": "sys-admin"
                 }
             )
-        logging.debug(f"Org will have {num_users} users")
+        logging.debug(f"{org_name} will have {num_users} users")
         # "Create" some engines
         num_engines = random_integer(self.engines.min, self.engines.max)
         ret["engines"] = []
@@ -82,7 +82,7 @@ class OrgArchetype(object):
                     "labels": "all"
                 }
             )
-        logging.debug(f"Org will have {num_engines} engines")
+        logging.debug(f"{org_name} will have {num_engines} engines")
         # Create some pipelines
         num_pipelines = random_integer(self.pipelines.min, self.pipelines.max)
         ret["pipelines"] = []
@@ -93,7 +93,7 @@ class OrgArchetype(object):
                     "owner": random_integer(0, num_users - 1)
                 }
             )
-        logging.debug(f"Org will have {num_pipelines} pipelines")
+        logging.debug(f"{org_name} will have {num_pipelines} pipelines")
         # Create some jobs
         num_inactive_jobs = random_integer(self.inactive_jobs.min, self.inactive_jobs.max)
         ret["jobs"] = []
@@ -106,7 +106,7 @@ class OrgArchetype(object):
                     "owner": random_integer(0, num_users - 1)
                 }
             )
-        logging.debug(f"Org will have {num_inactive_jobs} inactive jobs")
+        logging.debug(f"{org_name} will have {num_inactive_jobs} inactive jobs")
         num_active_jobs = random_integer(self.active_jobs.min, self.active_jobs.max)
         for active_job_idx in range(num_active_jobs):
             ret.get("jobs").append(
@@ -117,7 +117,7 @@ class OrgArchetype(object):
                     "owner": random_integer(0, num_users - 1)
                 }
             )
-        logging.debug(f"Org will have {num_active_jobs} active jobs")
+        logging.debug(f"{org_name} will have {num_active_jobs} active jobs")
         # Create some scheduled tasks
         num_scheduled_tasks = random_integer(self.scheduled_tasks.min, self.scheduled_tasks.max)
         ret["scheduled_tasks"] = []
@@ -134,7 +134,7 @@ class OrgArchetype(object):
 
                 }
             )
-        logging.debug(f"Org will have {num_scheduled_tasks} scheduled tasks")
+        logging.debug(f"{org_name} will have {num_scheduled_tasks} scheduled tasks")
         # Create some subscriptions (doesn't matter if subs are enabled or not)
         num_subscriptions = random_integer(self.subscriptions.min, self.subscriptions.max)
         ret["subscriptions"] = []
@@ -147,7 +147,7 @@ class OrgArchetype(object):
                     "owner": random_integer(0, num_users - 1)
                 }
             )
-        logging.debug(f"Org will have {num_subscriptions} subscriptions")
+        logging.debug(f"{org_name} will have {num_subscriptions} subscriptions")
         return ret
 
     @staticmethod
