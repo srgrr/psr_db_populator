@@ -12,9 +12,9 @@ def get_local_ip() -> str:
     ).decode("utf-8").strip()
 
 
-def get_pwd():
+def get_pwd() -> str:
     return os.getcwd()
 
 
-def pretty_cli(cli: dict):
+def pretty_cli(cli: dict) -> str:
     return ", ".join(f"{k}={v}" for (k, v) in cli.items())

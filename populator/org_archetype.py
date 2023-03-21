@@ -47,7 +47,7 @@ class OrgArchetype(object):
         assert self.active_jobs.max <= self.max_job_runs, _interval_error_msg(self.active_jobs, self.max_job_runs, "active jobs")
         assert self.scheduled_tasks.max <= self.max_scheduled_runs, _interval_error_msg(self.scheduled_tasks, self.max_scheduled_runs, "scheduled tasks")
 
-    def get_specific_instance(self):
+    def get_specific_instance(self) -> dict:
         org_name = random_string(10)
         ret = {
             "org_name": org_name,
@@ -151,7 +151,7 @@ class OrgArchetype(object):
         return ret
 
     @staticmethod
-    def _str2interval(interval_value: str):
+    def _str2interval(interval_value: str) -> config_interval:
         lo, hi = map(int, interval_value.split(","))
         return config_interval(lo, hi)
 

@@ -3,7 +3,7 @@ import string
 from numpy import random
 
 
-def get_rng():
+def get_rng() -> random:
     return random
 
 
@@ -17,11 +17,11 @@ def random_integer(lo: int, hi: int) -> int:
     return random.randint(lo, hi)
 
 
-def choice(a):
+def choice(a: list):
     assert a, f"Array '{a}' must not be empty or None"
     return a[random_integer(0, len(a))]
 
 
-def random_string(length=5):
+def random_string(length: int = 5) -> str:
     assert length > 0, f"String length must be positive"
     return "".join(string.ascii_lowercase[random_integer(0, 25)] for _ in range(length))

@@ -12,7 +12,7 @@ def _get_org_pool_from_data_model(data_model_root: str, use_sample_schema: bool)
     return load_from_root(data_model_root, root)
 
 
-def main(random_seed, data_model_root, num_orgs, use_sample_schema):
+def main(random_seed: int, data_model_root: str, num_orgs: int, use_sample_schema: bool):
     logging.debug(f"Invoked PSR Create JSON Schema tool with CLI args {pretty_cli(locals())}")
     set_random_seed(random_seed)
     org_pool = _get_org_pool_from_data_model(data_model_root, use_sample_schema)

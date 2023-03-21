@@ -1,4 +1,5 @@
 import logging
+import tqdm
 from populator.load_schema_cli import parse_args
 from populator.util import pretty_cli
 from streamsets import sdk

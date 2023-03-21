@@ -1,3 +1,4 @@
+import argparse
 from argparse import ArgumentParser
 from populator.util import get_local_ip
 
@@ -51,5 +52,5 @@ def get_parser() -> ArgumentParser:
     return parser
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     return get_parser().parse_args()

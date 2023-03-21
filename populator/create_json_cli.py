@@ -36,5 +36,5 @@ def get_parser():
     return parser
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     return get_parser().parse_args()

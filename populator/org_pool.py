@@ -13,7 +13,7 @@ class OrgPool(object):
     def add_org(self, score, org: OrgArchetype):
         self.orgs.append(weighted_org(score, org))
 
-    def pick_org(self):
+    def pick_org(self) -> OrgArchetype:
         score_sum = sum(x.score for x in self.orgs)
         chosen_score = random_integer(1, score_sum)
         current_score = 0

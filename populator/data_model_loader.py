@@ -11,7 +11,7 @@ def _get_config_parser(filename: str) -> ConfigParser:
     return ret
 
 
-def _get_org_keys(org_config):
+def _get_org_keys(org_config) -> list:
     return [org for org in org_config if re.match(r"[a-z]+-org", org)]
 
 
