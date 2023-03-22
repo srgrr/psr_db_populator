@@ -63,7 +63,7 @@ optional arguments:
 TODO
 
 
-# What's out of scope?
+# What's out of scope? What are the limitations?
 - Engines can be anything since we are only concerned about the DB here, so the same DB dump using mock SDCs will give completely different PSR results than if ran using CSP engines
 - This tool implements "passive noise" e.g. it doesn't emulate customers creating or deleting stuff. Think of all those orgs as a "ghost town"
 - Since part of the passive noise entails "ghost orgs" running scheduled tasks this might make PSRs a bit harder to analyze. However, since PSR tests are randomly ran for extended period of times we can trust the law of big numbers to deem such randomness as irrelevant
@@ -76,8 +76,9 @@ These other items should be either handled elsewhere or we should at least ackno
 # Why this tool?
 Prod data, although trivial to obtain, is not consistent across PSRs. We wanted to still be able to run PSRs using that "background noise" since it's the most realistic environment we could ever come up but we wanted to guarantee reproducibility
 
-## Why are creating the DB Dump offline each time we want to run a PSR? Wouldn't it be enough to just create one and keep reusing it?
-That would be great if DB updates weren't a thing, but unfortunately they are
+
+## Why is this process so complex? Wouldn't it be easier to just create a DB dump and keep using it for any PSR we might like to run?
+That would be certainly an option if DB upgrades weren't a thing, but unfortunately they are. Also, splitting this process into many steps, one of them being verification, will allow us to construct the background baseline PSR model offline, so it won't affect the outcome of the PSR itself. It will also give us more time to prepare such PSR as we will have virtually unlimited attempts to reconstruct the proposed DB from a fixed JSON model
 
 
 # TODO LIST
