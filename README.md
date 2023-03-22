@@ -11,13 +11,22 @@ This tool emulates the data you can find in production environments
 - Everything will ideally work as it does in prod (e.g. we won't need to turn subscriptions off, we won't get credential errors or connectivity issues from customer jobs trying to interact with a non-reachable engine).
 
 
+# Process overview
+- Create a "DB status" represented in a JSON file. This is guaranteed to be reproducible as long as the same random seed is used along with number of orgs and overall Python env configuration
+- Use this JSON file to create the user organizations in Control Hub
+- Setup the engines in SCH for each org
+- Use this JSON file again to start the jobs that are supposed to be active. Since we are using no specific labels for those engines we should expect uniform load balancing between all those engines
+- Using that "seed JSON" again, verify that the state of the DB is consistent with what we intended to create
+- Now we're ready to start the PSR itself
+
+
 # How to run the tool
 Make sure your python interpreter has all the required dependencies to run this project.
 You can either run `pip install -r requirements.txt` or use the dockerized version of the tool (more on this later)
 
+## Create JSON model
 ```
-usage: PSR DB populator [-h] [--random-seed RANDOM_SEED] [--num-orgs NUM_ORGS] [--use-sample-schema] [--sch-url SCH_URL] [--sch-username SCH_USERNAME]
-                        [--sch-password SCH_PASSWORD] [--sch-authoring-sdc SCH_AUTHORING_SDC]
+usage: PSR DB populator [-h] [--random-seed RANDOM_SEED] [--num-orgs NUM_ORGS] [--use-sample-schema] [--data-model-root DATA_MODEL_ROOT]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -25,35 +34,50 @@ optional arguments:
                         Random seed Default: 19071990
   --num-orgs NUM_ORGS   Num orgs Default: 10
   --use-sample-schema   Use a smaller schema instead of the real one for testing purposes Default: False
-  --sch-url SCH_URL     SCH URL Default: http://192.168.2.58:18631
-  --sch-username SCH_USERNAME
-                        SCH Admin Username Default: admin@admin
-  --sch-password SCH_PASSWORD
-                        SCH Admin Password Default: admin@admin
-  --sch-authoring-sdc SCH_AUTHORING_SDC
-                        SCH Authoring SDC Default: http://192.168.2.58:18630
+  --data-model-root DATA_MODEL_ROOT
+                        Root for data model files Default: /Users/sergio/git/psr_db_populator
 ```
+
+## Populate SCH DB from JSON model
+
+```
+usage: Populate SCH from JSON specification [-h] [--sch-url SCH_URL] [--sch-username SCH_USERNAME] [--sch-password SCH_PASSWORD] [--sch-authoring-sdc SCH_AUTHORING_SDC]
+                                            json_file
+
+positional arguments:
+  json_file             JSON File
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --sch-url SCH_URL     (3x only) SCH URL Default: http://192.168.132.55:18631
+  --sch-username SCH_USERNAME
+                        (3x only) SCH Admin Username Default: admin@admin
+  --sch-password SCH_PASSWORD
+                        (3x only) SCH Admin Password Default: admin@admin
+  --sch-authoring-sdc SCH_AUTHORING_SDC
+                        (3x only) SCH Authoring SDC Default: http://192.168.132.55:18630
+```
+
 
 # Containerized version
 TODO
 
 
-# Creating Reproducible DB Dumps
-TODO
-
 # What's out of scope?
-- Engines can be anything since we are only concerned about the DB here, so the same DB dump using mock SDCs will give a completely different result than if ran using CSP engines
-- This tool implements "passive noise" e.g. it doesn't emulate customers creating or deleting stuff
+- Engines can be anything since we are only concerned about the DB here, so the same DB dump using mock SDCs will give completely different PSR results than if ran using CSP engines
+- This tool implements "passive noise" e.g. it doesn't emulate customers creating or deleting stuff. Think of all those orgs as a "ghost town"
 - Since part of the passive noise entails "ghost orgs" running scheduled tasks this might make PSRs a bit harder to analyze. However, since PSR tests are randomly ran for extended period of times we can trust the law of big numbers to deem such randomness as irrelevant
-- There are many entities such as job run histories, audits and other stuff that might vary between runs
+- There are many entities such as job run histories, audits and other stuff that might vary between runs, although we can expect them to be similar and consistent enough to not care about the specific numbers
 
-These other items should be either handled elsewhere or we should at least acknowledge the noise introduced by them
+
+These other items should be either handled elsewhere or we should at least acknowledge them as sources of variance
 
 
 # Why this tool?
-Prod data, although trivial to obtain, is not consistent across PSRs. We wanted to still be able to run PSRs using that "background noise" since it's the most realistic environment we could ever come up with but we wanted to make it reproducible.
+Prod data, although trivial to obtain, is not consistent across PSRs. We wanted to still be able to run PSRs using that "background noise" since it's the most realistic environment we could ever come up but we wanted to guarantee reproducibility
+
 ## Why are creating the DB Dump offline each time we want to run a PSR? Wouldn't it be enough to just create one and keep reusing it?
-That would be great if DB updates weren't a thing, but unfortunately they are.
+That would be great if DB updates weren't a thing, but unfortunately they are
 
 
 # TODO LIST
@@ -61,3 +85,4 @@ That would be great if DB updates weren't a thing, but unfortunately they are.
 - Do a study using the obtained data
 - Define a data model for "SCH noise" that can represent the observed data and its underlying distributions
 - Write some code so we can use the previous data model to automatically create 
+- Use entrypoint scripts to all the features so it's easier to figure out what are callable modules and what are accessory files
