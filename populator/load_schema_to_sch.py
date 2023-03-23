@@ -1,6 +1,4 @@
 import logging
-import tqdm
-import uuid
 import json
 from populator.load_schema_cli import parse_args
 from populator.util import pretty_cli
@@ -38,11 +36,15 @@ def main(
     logging.debug(f"Invoked PSR Load Schema to SCH tool with CLI args {pretty_cli(locals())}")
     admin_sch = _get_sch(sch_url, sch_username, sch_password)
     for org_repr in json.load(open(json_file, "r")):
+        org_name = org_repr.get('org_name')
         logging.debug(f"Processing org {org_repr.get('org_name')}")
         org = _get_org_object_from_repr(admin_sch, org_repr)
-        logging.debug(f"Obtained SDK org from repr: {org}")
+        logging.debug(f"Adding org obtained from repr: {org}")
         admin_sch.add_organization(org)
-        logging.debug(f"Added Org {org_repr.get('org_name')} to SCH")
+        logging.debug(f"Added Org {org_name} to SCH")
+        org_sch = _get_sch(sch_url, f"admin@{org_name}", f"admin@{org_name}")
+        logging.debug(f"Obtained org SCH accessor {org_sch}")
+        logging.debug(f"Available SDCs for current org are {org_sch.data_collectors}")
 
 
 if __name__ == "__main__":

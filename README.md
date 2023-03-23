@@ -7,7 +7,6 @@ A tool to populate an empty DB with reproducible background noise. By noise we m
 
 This tool emulates the data you can find in production environments
 - Orgs, users, jobs per org, running jobs, num of engines etc follow the same distribution as observed in production
-- Some variables must be rewritten (which can also be done with this tool) such as engines/SVS IP etc
 - Everything will ideally work as it does in prod (e.g. we won't need to turn subscriptions off, we won't get credential errors or connectivity issues from customer jobs trying to interact with a non-reachable engine).
 
 
@@ -66,7 +65,7 @@ TODO
 # What's out of scope? What are the limitations?
 - Engines can be anything since we are only concerned about the DB here, so the same DB dump using mock SDCs will give completely different PSR results than if ran using CSP engines
 - This tool implements "passive noise" e.g. it doesn't emulate customers creating or deleting stuff. Think of all those orgs as a "ghost town"
-- Since part of the passive noise entails "ghost orgs" running scheduled tasks this might make PSRs a bit harder to analyze. However, since PSR tests are randomly ran for extended period of times we can trust the law of big numbers to deem such randomness as irrelevant
+- Since part of the passive noise entails "ghost orgs" running scheduled tasks this might make PSRs a bit harder to analyze. However, since PSR tests are randomly ran for extended period of time we can trust the law of big numbers to deem such randomness as irrelevant
 - There are many entities such as job run histories, audits and other stuff that might vary between runs, although we can expect them to be similar and consistent enough to not care about the specific numbers
 
 
